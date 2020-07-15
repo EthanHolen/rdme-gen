@@ -1,2 +1,2 @@
 # rdme-gen
-Tap to quickly generate a readme file in your current repository.
+Brew tap to quickly generate a readme file in your current repository.
