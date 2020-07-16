@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='rdme-gen',
-    version='1.0.0',
+    version='1.0.1',
     description='Generates a readme template in your current directory.',
     author='Ethan Holen',
     scripts=['bin/rdme-gen'],
