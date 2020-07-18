@@ -30,7 +30,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/EthanHolen/rdme-gen">
-    <img src="rdme-images/markdown.PNG" alt="Logo" width="100" height="80">
+    <img src="rdme-images/md.png" alt="Logo" width="100" height="80">
   </a>
 
   <h2 align="center">README Generator</h2>
