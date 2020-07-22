@@ -52,14 +52,11 @@ def determinePaths(images):
 
     if images:
         #global readmePath
-        readmePath = os.getenv(
-            "HOME") + "/.readmeTemplates/default-withImages/mainTemplate.md"
-        imagesPath = os.getenv(
-            "HOME") + "/.readmeTemplates/default-withImages/rdme-images"
+        readmePath = os.getenv("HOME") + "/.readmeTemplates/default-withImages/mainTemplate.md"
+        imagesPath = os.getenv("HOME") + "/.readmeTemplates/default-withImages/rdme-images"
 
     else:
-        readmePath = os.getenv("HOME") + \
-            "/.readmeTemplates/default/mainTemplate.md"
+        readmePath = os.getenv("HOME") + "/.readmeTemplates/default/mainTemplate.md"
         imagesPath = ""
 
     return
@@ -69,20 +66,19 @@ def determinePaths(images):
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 # ArgParse
-parser = argparse.ArgumentParser(
-    description="Generate README in current directory.")
+parser = argparse.ArgumentParser(description="Generate README in current directory.")
 group = parser.add_argument_group()
 
-group.add_argument(
-    '-img', '--includeImages', action='store_true', help='Generate the readme with images')
-group.add_argument('-f', '--fill', action='store_true',
-                             help='Prompt for README info to fill automatically')
+group.add_argument('-img', '--includeImages', action='store_true', help='Generate the readme with images')
+group.add_argument('-f', '--fill', action='store_true', help='Prompt for README info to fill automatically')
+parser.add_argument('-p', '--path', type=str, metavar='', help='Specify a path for the README other than the current directory')
 
 args = parser.parse_args()
 
 
 # Determine paths based on argparse arguments
 determinePaths(args.includeImages)
+    
 
 
 # prompt to create path if it does not exist
@@ -90,7 +86,7 @@ determinePaths(args.includeImages)
 
 if os.path.isfile(readmePath):
     copyREADME(readmePath, currentDir)
-    if imagesPath != "":
+    if imagesPath:
         copyIMAGES(imagesPath, currentDir)
 else:
     print(" \n You do not currently have the path: ~/.readmeTemplates/default \n you can quickly add the path by running: \n \n git clone https://github.com/EthanHolen/readmeTemplates && mv readmeTemplates ~/.readmeTemplates \n")
@@ -100,6 +96,9 @@ if(args.fill):
     fillAuto()
 
 
+
+
+print(args.path)
 # Testing stuff
 logging.debug("copied from: " + readmePath)
 logging.debug("copied to: " + currentDir)
