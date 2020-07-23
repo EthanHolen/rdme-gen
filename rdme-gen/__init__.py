@@ -13,14 +13,14 @@ global imagesPath
 # path to add README to
 currentDir = os.getcwd()
 
-
+# triggered by -f
 def fillAuto():
 
-    github_username_p = "github_username"
-    repo_p = "repo"
-    twitter_handle_p = "twitter_handle"
-    email_p = "email"
-
+    github_username_a = "github_username"
+    repo_a = "repo"
+    twitter_handle_a = "twitter_handle"
+    email_a = "email"
+    github_username = ""
     github_username = str(input("GitHub Username: "))
     repo = str(input("Repo: "))
     twitter_handle = str(input("Twitter Handle: "))
@@ -30,22 +30,19 @@ def fillAuto():
     with open(currentDir + "/README.md", "r") as file:
         filedata = file.read()
 
-    filedata = filedata.replace(github_username_p, github_username)
-    filedata = filedata.replace(repo_p, repo)
-    filedata = filedata.replace(twitter_handle_p, twitter_handle)
-    filedata = filedata.replace(email_p, email)
+    filedata = filedata.replace(github_username_a, github_username)
+    filedata = filedata.replace(repo_a, repo)
+    filedata = filedata.replace(twitter_handle_a, twitter_handle)
+    filedata = filedata.replace(email_a, email)
 
     with open(currentDir + "/README.md", "w") as file:
         file.write(filedata)
 
-
 def copyREADME(fromDir, toDir):
     shutil.copy(fromDir, toDir + "/README.md")
 
-
 def copyIMAGES(fromDir, toDir):
     shutil.copytree(fromDir, toDir + "/rdme-images")
-
 
 def determinePaths(images):
     global readmePath, imagesPath
@@ -78,6 +75,10 @@ args = parser.parse_args()
 
 # Determine paths based on argparse arguments
 determinePaths(args.includeImages)
+
+if args.path != None:
+    assert os.path.exists(args.path), "\n" + args.path + " is not a valid path."
+    currentDir = args.path
     
 
 
@@ -92,8 +93,8 @@ else:
     print(" \n You do not currently have the path: ~/.readmeTemplates/default \n you can quickly add the path by running: \n \n git clone https://github.com/EthanHolen/readmeTemplates && mv readmeTemplates ~/.readmeTemplates \n")
 
 
-if(args.fill):
-    fillAuto()
+if(args.fill): fillAuto()
+    
 
 
 
