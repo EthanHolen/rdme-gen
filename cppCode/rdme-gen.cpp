@@ -9,5 +9,11 @@ using namespace std;
 int main()
 {
     ofstream rdmeFile;
+
+    rdmeFile.open("README.md");
+
+
+    rdmeFile.close();
+
     return 0;
 }
