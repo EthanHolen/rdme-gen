@@ -6,7 +6,7 @@
 -->
 
 
-
+HEllo
 
 
 <!-- PROJECT SHIELDS -->
@@ -61,6 +61,7 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
+		-[Flags](#flags)
 - [Roadmap](#roadmap)
 - [License](#license)
 - [Contact](#contact)
@@ -114,12 +115,21 @@ The first time you run `rdme-gen` you will be prompted to clone the default temp
 ![Product Name Screen Shot][product-screenshot2]
  
 
-
 When `rdme-gen` is run with no flags the default README template is copied into the current directory. 
 
 ![Product Name Screen Shot][product-screenshot]
 
-Currently `rdme-gen` has two flags `-f`, which will prompt you with questions and then do a search and replace inside the README to easily get you started on your docs and  `-img`, which will populate in a `rdme-images` folder to store images for the README.
+### Flags
+
+| Flag	| Usage | Example |
+|:--|:--|:--|
+| `-f` | Prompts the user with questions such as github username and project name which will be populated into the readme. | `rdme-gen -f` |
+| `-img` | Brings in a `rdme-images` folder and adds image links to the template. | `rdme-gen -img` |
+| `-p` | Allows the user to add a custom path as the target instead of the current directory. | `rdme-gen -p ~/projects/my-new-amazing-project/` |
+
+
+
+
 
 ![Product Name Screen Shot][product-screenshot3]
 
