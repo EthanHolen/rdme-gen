@@ -61,7 +61,7 @@ HEllo
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
-		-[Flags](#flags)
+  - [Flags](#flags)
 - [Roadmap](#roadmap)
 - [License](#license)
 - [Contact](#contact)
@@ -121,7 +121,7 @@ When `rdme-gen` is run with no flags the default README template is copied into 
 
 ### Flags
 
-| Flag	| Usage | Example |
+| Flag	 Name| Usage | Example |
 |:--|:--|:--|
 | `-f` | Prompts the user with questions such as github username and project name which will be populated into the readme. | `rdme-gen -f` |
 | `-img` | Brings in a `rdme-images` folder and adds image links to the template. | `rdme-gen -img` |
