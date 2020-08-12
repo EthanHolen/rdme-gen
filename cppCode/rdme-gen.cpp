@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-//#include <filesystem>
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -22,8 +21,6 @@ void processArgs(int argc, const char *argv[]);
 bool pathExists(const string &s);
 void determinePaths(string *rdme_path, string *img_path);
 string get_current_dir();
-
-
 
 
 
@@ -72,7 +69,7 @@ int main(int argc, const char *argv[])
         << "img_path: " << img_path << endl
         << "Path: " << path << endl
         << "Target Path: " << target_path << endl
-        << "Fillable: " << fillable << endl
+        << "Fillable: " << fillable << endl 
         << "Help: " << help << endl;
 
 
