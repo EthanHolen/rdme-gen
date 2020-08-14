@@ -19,16 +19,11 @@ string rdme_gen_folder = string(getenv("HOME")) + "./rdme-gen";
 
 void processArgs(int argc, const char *argv[]);
 bool pathExists(const string &s);
-void determinePaths(string *rdme_path, string *img_path);
+void determinePaths(string *rdme_path, string *img_path, string *target_path);
 string get_current_dir();
-
-
-
-
 
 int main(int argc, const char *argv[])
 {
-
 
     // Parse arguments
     processArgs(argc, argv);
@@ -41,41 +36,29 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
-
-
     // determine paths
 
     string rdme_path = rdme_gen_folder;
     string img_path = rdme_gen_folder;
 
-
-    determinePaths(&rdme_path, &img_path);
-    
-
-
-    target_path = get_current_dir();
+    determinePaths(&rdme_path, &img_path, &target_path);
 
     // copy
 
-
-
-
     // Debugging
     cout
-        << "last argument: " << argv[argc - 1] << endl
         << "Images: " << img << endl
+        << "Path: " << path << endl
+        << "Fillable: " << fillable << endl
+        << "Help: " << help << endl
+        << endl
         << "rdme_gen_folder: " << rdme_gen_folder << endl
         << "rdme_path: " << rdme_path << endl
         << "img_path: " << img_path << endl
-        << "Path: " << path << endl
-        << "Target Path: " << target_path << endl
-        << "Fillable: " << fillable << endl 
-        << "Help: " << help << endl;
-
+        << "Target Path: " << target_path << endl;
 
     return 1;
 }
-
 
 void processArgs(int argc, const char *argv[])
 {
@@ -108,15 +91,9 @@ void processArgs(int argc, const char *argv[])
             }
             else
                 target_path = "";
-
-
         }
-
     }
-
-
 }
-
 
 bool pathExists(const string &s)
 {
@@ -124,9 +101,7 @@ bool pathExists(const string &s)
     return (stat(s.c_str(), &buffer) == 0);
 }
 
-
-
-void determinePaths(string *rdme_path, string *img_path)
+void determinePaths(string *rdme_path, string *img_path, string *target_path)
 {
 
     if (img)
@@ -136,16 +111,19 @@ void determinePaths(string *rdme_path, string *img_path)
     }
     else
     {
-        /* code */
+        *rdme_path += "/default/mainTemplate.md";
+        *img_path = "";
     }
-    
+    if (!path)
+    {
+        *target_path = get_current_dir();
+    }
 }
 
-
-
-string get_current_dir() {
-   char buff[FILENAME_MAX]; //create string buffer to hold path
-   getcwd( buff, FILENAME_MAX );
-   string current_working_dir(buff);
-   return current_working_dir;
+string get_current_dir()
+{
+    char buff[FILENAME_MAX]; //create string buffer to hold path
+    getcwd(buff, FILENAME_MAX);
+    string current_working_dir(buff);
+    return current_working_dir;
 }
