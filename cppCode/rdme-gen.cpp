@@ -1,11 +1,12 @@
 // rdme-gen in cpp
 
 #include <iostream>
-#include <copyfile.h>
 #include <fstream>
 #include <unistd.h>
 #include <string.h>
 #include <sys/stat.h>
+// #include <filesystem>
+// #include <exception>
 
 using namespace std;
 
@@ -16,17 +17,30 @@ bool path = false;
 bool help = false;
 string target_path;
 string bad_target_path;
-string rdme_gen_folder = string(getenv("HOME")) + "./rdme-gen";
+string rdme_gen_folder = string(getenv("HOME")) + "/.rdme-gen";
 
 void processArgs(int argc, const char *argv[]);
-void help_message(int argc, const char *argv[]);
+void error_message(string type);
 bool pathExists(const string &s);
 void determinePaths(string *rdme_path, string *img_path, string *target_path);
 string get_current_dir();
 void copyThis(string from, string to);
+void copyFile(std::string start, std::string destination);
+bool copyFile(string *from, string *to);
+bool copyFolder(string *from, string *to);
+
+
+
 
 int main(int argc, const char *argv[])
 {
+    // check if rdme path exists
+    if (!pathExists(rdme_gen_folder))
+    {
+        error_message("PATH_NOT_FOUND");
+        return 0;
+    }
+    
 
     // Parse arguments
     processArgs(argc, argv);
@@ -39,6 +53,9 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
+    
+
+
     // determine paths
 
     string rdme_path = rdme_gen_folder;
@@ -48,8 +65,12 @@ int main(int argc, const char *argv[])
 
     // copy
 
-    copyThis(rdme_path, target_path);
-    // copyfile(rdme_path.c_str(), target_path.c_str(), NULL, COPYFILE_DATA);
+    copyFile(&rdme_path, &target_path);
+    // if (img)
+    // {
+    //     copyFolder(&img_path, &target_path)
+    // }
+    
 
     // Debugging
     cout
@@ -74,7 +95,7 @@ void processArgs(int argc, const char *argv[])
 
         if (argument == "-h" || argument == "--help")
         {
-            help_message(argc, argv);
+            error_message("HELP");
             help = true;
         }
         else if (argument == "-img" || argument == "--image")
@@ -112,7 +133,7 @@ void determinePaths(string *rdme_path, string *img_path, string *target_path)
     if (img)
     {
         *rdme_path += "/default-with-images/mainTemplate.md";
-        *img_path += "//default-with-images/rdme-images";
+        *img_path += "/default-with-images/rdme-images";
     }
     else
     {
@@ -138,9 +159,11 @@ string get_current_dir()
     return current_working_dir;
 }
 
-void help_message(int argc, const char *argv[])
+void error_message(string type)
 {
-    cout
+    if(type == "HELP")
+    {
+        cout
         << "usage: rdme-gen [-h] [-img] [-f] [-p]\n\n"
         << "Generate README in current directory.\n\n"
         << "optional arguments:\n"
@@ -148,29 +171,35 @@ void help_message(int argc, const char *argv[])
         << "   -p , --path           Specify a path for the README other than the current directory\n"
         << "   -img, --includeImages  Generate the readme with images\n"
         << "   -f, --fill            Prompt for README info to fill automatically\n";
-    // << "   -fd, --fillDefaults   Prompt for info to set as defaults\n"
+        // << "   -fd, --fillDefaults   Prompt for info to set as defaults\n"
+    }
+    if(type == "PATH_NOT_FOUND")
+    {
+        cout
+        << "You do not currently have the path: ~/.readmeTemplates/default\n"
+        << "you can quickly add the path by running:\n\n"
+        << "git clone https://github.com/EthanHolen/readmeTemplates && mv readmeTemplates ~/.rdme-gen"
+        << endl;
+    }
 
-    // usage: rdme-gen [-h] [-img] [-f] [-p]
-
-    // Generate README in current directory.
-
-    // optional arguments:
-    //   -h, --help            show this help message and exit
-    //   -p , --path           Specify a path for the README other than the
-    //                         current directory
-
-    //   -img, --includeImages
-    //                         Generate the readme with images
-    //   -f, --fill            Prompt for README info to fill automatically";
 }
 
-void copyThis(string from, string to)
+bool copyFile(string *from, string *to)
 {
-    ifstream in(from.c_str());
-    ofstream out(to.c_str());
-    string s;
-    while(getline(in, s))
-        out << s << "\n";
+    string systemString = "cp " + *from + " " + *to;
 
-    // dst << src.rdbuf();
+    system(systemString.c_str());
+
+    return true;
+
+}
+
+bool copyFolder(string *from, string *to)
+{
+    string systemString = "cp -r " + *from + " " + *to;
+
+    system(systemString.c_str());
+
+    return true;
+
 }
