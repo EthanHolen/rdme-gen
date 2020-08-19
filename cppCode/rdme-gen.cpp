@@ -10,26 +10,32 @@
 
 using namespace std;
 
-// Variables
-bool img = false;
-bool fillable = false;
-bool path = false;
-bool help = false;
-string target_path;
-string bad_target_path;
-string rdme_gen_folder = string(getenv("HOME")) + "/.rdme-gen";
-
+// Functions
 void processArgs(int argc, const char *argv[]);
 void error_message(string type);
 bool pathExists(const string &s);
-void determinePaths(string *rdme_path, string *img_path, string *target_path);
+void determinePaths();
 string get_current_dir();
 void copyThis(string from, string to);
 void copyFile(std::string start, std::string destination);
 bool copyFile(string *from, string *to);
 bool copyFolder(string *from, string *to);
 
+// Variables
+bool img = false;
+bool fillable = false;
+bool path = false;
+bool help = false;
 
+string rdme_gen_folder = string(getenv("HOME")) + "/.rdme-gen";
+
+string rdme_target_path;
+string img_target_path;
+
+string rdme_source_path = rdme_gen_folder;
+string img_source_path = rdme_gen_folder;
+
+string bad_target_path;
 
 
 int main(int argc, const char *argv[])
@@ -40,48 +46,40 @@ int main(int argc, const char *argv[])
         error_message("PATH_NOT_FOUND");
         return 0;
     }
-    
 
     // Parse arguments
     processArgs(argc, argv);
     // only present help message when -h is passed and dont run the rest of the function
     if (help)
         return 0;
-    if (target_path == "" && path)
+    if (rdme_target_path == "" && path)
     {
         printf("The file path \"%s\" does not exist.\n", bad_target_path.c_str());
         return 0;
     }
 
-    
-
-
     // determine paths
 
-    string rdme_path = rdme_gen_folder;
-    string img_path = rdme_gen_folder;
-
-    determinePaths(&rdme_path, &img_path, &target_path);
+    determinePaths();
 
     // copy
 
-    copyFile(&rdme_path, &target_path);
-    // if (img)
-    // {
-    //     copyFolder(&img_path, &target_path)
-    // }
-    
+    copyFile(&rdme_source_path, &rdme_target_path);
+    if (img)
+    {
+        copyFolder(&img_source_path, &img_target_path);
+    }
 
-    // Debugging
+    //Debugging
     cout
         << "Images: " << img
         << "\nPath: " << path
         << "\nFillable: " << fillable
         << "\nHelp: " << help
-        << "\n\nrdme_gen_folder: " << rdme_gen_folder
-        << "\nrdme_path: " << rdme_path
-        << "\nimg_path: " << img_path
-        << "\nTarget Path: " << target_path << endl;
+        << "\nREADME.md From: " << rdme_source_path
+        << " To: " << rdme_target_path
+        << "\nIMGS From: " << img_source_path
+        << " To: " << img_target_path << endl;
 
     return 1;
 }
@@ -113,10 +111,11 @@ void processArgs(int argc, const char *argv[])
                 bad_target_path = argv[i + 1];
 
                 if (pathExists(string(argv[i + 1])))
-                    target_path = argv[i + 1];
+                    rdme_target_path = argv[i + 1];
+                img_target_path = rdme_target_path;
             }
             else
-                target_path = "";
+                rdme_target_path = "";
         }
     }
 }
@@ -127,27 +126,30 @@ bool pathExists(const string &s)
     return (stat(s.c_str(), &buffer) == 0);
 }
 
-void determinePaths(string *rdme_path, string *img_path, string *target_path)
+void determinePaths()
 {
-
+    //Source
     if (img)
     {
-        *rdme_path += "/default-with-images/mainTemplate.md";
-        *img_path += "/default-with-images/rdme-images";
+        rdme_source_path += "/default-with-images/mainTemplate.md";
+        img_source_path += "/default-with-images/rdme-images";
     }
     else
     {
-        *rdme_path += "/default/mainTemplate.md";
-        *img_path = "";
+        rdme_source_path += "/default/mainTemplate.md";
+        img_source_path = "";
     }
 
+    //Target
     if (!path)
     {
-        *target_path = get_current_dir() + "/README.md";
+        rdme_target_path = get_current_dir() + "/README.md";
+        img_target_path = "";
     }
     else
     {
-        *target_path += "/README.md";
+        rdme_target_path += "/README.md";
+        img_target_path += "";
     }
 }
 
@@ -161,45 +163,44 @@ string get_current_dir()
 
 void error_message(string type)
 {
-    if(type == "HELP")
+    if (type == "HELP")
     {
         cout
-        << "usage: rdme-gen [-h] [-img] [-f] [-p]\n\n"
-        << "Generate README in current directory.\n\n"
-        << "optional arguments:\n"
-        << "   -h, --help\n"
-        << "   -p , --path           Specify a path for the README other than the current directory\n"
-        << "   -img, --includeImages  Generate the readme with images\n"
-        << "   -f, --fill            Prompt for README info to fill automatically\n";
+            << "usage: rdme-gen [-h] [-img] [-f] [-p]\n\n"
+            << "Generate README in current directory.\n\n"
+            << "optional arguments:\n"
+            << "   -h, --help\n"
+            << "   -p , --path           Specify a path for the README other than the current directory\n"
+            << "   -img, --includeImages  Generate the readme with images\n"
+            << "   -f, --fill            Prompt for README info to fill automatically\n";
         // << "   -fd, --fillDefaults   Prompt for info to set as defaults\n"
     }
-    if(type == "PATH_NOT_FOUND")
+    if (type == "PATH_NOT_FOUND")
     {
         cout
-        << "You do not currently have the path: ~/.readmeTemplates/default\n"
-        << "you can quickly add the path by running:\n\n"
-        << "git clone https://github.com/EthanHolen/readmeTemplates && mv readmeTemplates ~/.rdme-gen"
-        << endl;
+            << "You do not currently have the path: ~/.readmeTemplates/default\n"
+            << "you can quickly add the path by running:\n\n"
+            << "git clone https://github.com/EthanHolen/readmeTemplates && mv readmeTemplates ~/.rdme-gen"
+            << endl;
     }
-
 }
 
 bool copyFile(string *from, string *to)
 {
-    string systemString = "cp " + *from + " " + *to;
+    string system_string = "cp " + *from + " " + *to;
 
-    system(systemString.c_str());
+    system(system_string.c_str());
 
     return true;
-
 }
 
 bool copyFolder(string *from, string *to)
 {
-    string systemString = "cp -r " + *from + " " + *to;
+    //string make_folder = "mkdir " + *to;
+    string copy_folder = "cp -r " + *from + " " + *to;
 
-    system(systemString.c_str());
+    //system(make_folder.c_str());
+    system(copy_folder.c_str());
 
     return true;
-
 }
