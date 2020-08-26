@@ -156,6 +156,7 @@ string get_current_dir()
     char buff[FILENAME_MAX]; //create string buffer to hold path
     getcwd(buff, FILENAME_MAX);
     string current_working_dir(buff);
+    // Add a condition to check for () and add \ before
     return current_working_dir;
 }
 
