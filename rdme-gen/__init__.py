@@ -79,7 +79,7 @@ determinePaths(args.includeImages)
 if args.path != None:
     assert os.path.exists(args.path), "\n" + args.path + " is not a valid path."
     currentDir = args.path
-    
+
 
 
 # prompt to create path if it does not exist
@@ -94,12 +94,9 @@ else:
 
 
 if(args.fill): fillAuto()
-    
 
 
 
-
-print(args.path)
 # Testing stuff
 logging.debug("copied from: " + readmePath)
 logging.debug("copied to: " + currentDir)

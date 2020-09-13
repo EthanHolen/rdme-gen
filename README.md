@@ -6,8 +6,6 @@
 -->
 
 
-HEllo
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -36,7 +34,7 @@ HEllo
   <h2 align="center">README Generator</h2>
 
   <p align="center">
-    This is a project to create a homebrew tap which can generate a fillable README in your current directory. 
+    This is a project to create a homebrew tap which can generate a fillable README in your current directory.
     <br />
     <a href="https://github.com/EthanHolen/rdme-gen"><strong>Explore the docs »</strong></a>
     <br />
@@ -93,7 +91,7 @@ To install this on your personal machine follow these simple steps.
 2. Follow the instructions there to install the latest version of homebrew on to your mac.
 
 ### Installation
- 
+
 1. After installing homebrew paste this into your terminal
 ```sh
 brew tap EthanHolen/taps
@@ -113,9 +111,9 @@ The first time you run `rdme-gen` you will be prompted to clone the default temp
 > Feel free to edit the README files in this directory as they will be the ones copied when running the rdme-gen comand (be careful though, changing the file structure or names of files will cause the program to fail)
 
 ![Product Name Screen Shot][product-screenshot2]
- 
 
-When `rdme-gen` is run with no flags the default README template is copied into the current directory. 
+
+When `rdme-gen` is run with no flags the default README template is copied into the current directory.
 
 ![Product Name Screen Shot][product-screenshot]
 
@@ -209,4 +207,3 @@ Project Link: [https://github.com/EthanHolen/rdme-gen](https://github.com/EthanH
 [product-screenshot]: rdme-images/usage1.png
 [product-screenshot2]: rdme-images/usage0.png
 [product-screenshot3]: rdme-images/usage2.png
-
